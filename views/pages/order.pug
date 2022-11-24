@@ -1,0 +1,25 @@
+html
+	head
+		script
+			include ./PageJavascript.js
+		script(src = "https://unpkg.com/axios/dist/axios.min.js")
+		script(src = 'https://code.jquery.com/jquery-3.4.1.min.js')
+		style 
+			include ./style.css
+		title Product Database
+body
+	include ../partials/header
+
+	div(class = "container")
+		br
+		p= motto
+		br
+		ul
+		
+		h1 Id: #{order.id}
+		h1 Name: #{order.name}
+		each product in order.products
+				h1(onclick = `findById(id);` id = product.id) Product Id: #{product.id}
+				h1 Product Quantity: #{product.quantity}
+	include ../partials/footer
+

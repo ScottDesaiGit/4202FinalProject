@@ -1,0 +1,275 @@
+/* Creating the custom styles to be used in the website */
+:root {
+  --bg_main: #101027;
+  --main_text: #fff;
+  --darkred: #530606;
+}
+
+
+/* Style the header */
+.header {
+  color:  var(--main_text);
+  background-color: var(--bg_main);
+  font-family: "Arial Black", Gadget, sans-serif;
+  text-align: center;
+  font-weight: bold;
+  font-size: 30px;
+  letter-spacing: 0.02em;
+  padding: 25px 0 25px 0;
+}
+
+/* Styling the major body components used in the website*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-weight: normal;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg_main);
+}
+
+
+input[type=text] {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  border-bottom: 1px solid var(--main_text);
+  width: 50%;
+  padding: 5px 20px;
+  margin: 30px 50px 55px 100px;
+  box-sizing: border-box;
+  color: var(--main_text);
+  font-family: "Arial Black", Gadget, sans-serif;
+  font-size: 30px;
+  letter-spacing: 0.02em;
+}
+
+.logo {
+  color:  var(--main_text);
+  background-color: var(--bg_main);
+  font-family: "Great Vibes";
+  text-align: center;
+  font-weight: bold;
+  font-size: 100px;
+  letter-spacing: 0.02em;
+  padding: 50px 0 0px 0;
+}
+
+#weatherData{
+  background-color: var(--main_text);
+  color:rgb(0, 0, 0);
+  width: 300px;
+  height: 450px;
+  align-self: center;
+  text-align: center;
+  border-radius: 25px;
+  
+}
+
+#username{
+  background: white;
+  color: rgb(0, 0, 0);
+}
+
+#weatherContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 50px;
+}
+
+#city{
+  margin-top: 100px;
+}
+
+p{
+  color: var(--main_text);
+  font-size: 22px;
+  font-family: "Arial Black", Gadget, sans-serif;
+  padding: 0px 64px;
+}
+
+label {
+    cursor: pointer;
+    color: var(--main_text);
+    display: block;
+    padding: 0px;
+    margin: 3px;
+    font-size: 30px;
+}
+
+html
+{
+  background: var(--bg_main); 
+  background-color: var(--bg_main);
+  background-size: cover;
+  color:var(--main_text);
+}
+
+.button {
+  background-color: var(--darkred); /* Green */
+  border: none;
+  color: var(--main_text);
+  padding: 20px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  width: 500px;
+  font-size: 25px;
+  transition-duration: 0.4s;
+  border-radius: 20px;
+  margin: auto;
+}
+
+h1{
+  font-size: 30px;
+}
+
+h6{
+  font-size: 50px;
+  color: white;
+}
+
+.button:hover{
+  background-color:rgb(0, 0, 0);
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+  color: var(--main_text);
+}
+
+div{
+  display: block;
+  text-align: center;
+  padding-top: 10px;
+  font-family: "Arial Black", Gadget, sans-serif;
+  font-size: 30px;
+  letter-spacing: 0.02em;
+}
+
+/* Page footer */
+.page-footer {
+  text-align: right;
+  font-size: 1rem;
+  color: var(--main_text);
+  margin-top: 40px;
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 40px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: darkred;
+  color: black;
+}
+
+
+
+
+.userContainer > .profilePictureGrid{
+  grid-area: profilePictureGrid;
+}
+.userContainer > .userTierGrid{
+  grid-area: userTierGrid;
+}
+.userContainer > .dateRegisteredGrid{
+  grid-area: dateRegisteredGrid;
+}
+.userContainer > .peopleFollowGrid{
+  grid-area: peopleFollowGrid;
+}
+.userContainer > .followersGrid{
+  grid-area: followersGrid;
+}
+
+.userContainer > .unfollowGrid{
+  grid-area: unfollowGrid;
+}
+
+.userContainer > .accountTypeGrid{
+  grid-area: accountTypeGrid;
+}
+
+.userContainer > .accountTypeSwitchGrid{
+  grid-area: accountTypeSwitchGrid;
+}
+
+.userContainer > .moviesRecommendedGrid{
+  grid-area: moviesRecommendedGrid;
+}
+
+.userContainer > .movieWatchedGrid{
+  grid-area: movieWatchedGrid;
+}
+
+
+.userContainer{
+  display:grid;
+  grid-template-areas: 
+  'usernameGrid profilePictureGrid'
+  'usernameGrid profilePictureGrid'
+  'userTierGrid dateRegisteredGrid'
+  'peopleFollowGrid peopleFollowGrid'
+  'followersGrid unfollowGrid'
+  'accountTypeGrid accountTypeSwitchGrid'
+  'moviesRecommendedGrid movieWatchedGrid';
+  gap: 5px;
+  background-color: var(--bg_main);
+  padding: 10px;
+  color: white;
+ 
+  /*grid-template-rows: repeat(5, 1fr);*/
+  /*grid-template-rows: 50px;*/
+  /*grid-template-columns: repeat(10, 1fr);*/
+ 
+  height: 1000px;
+  width: 2000px;
+  /*margin: auto;*/
+  grid-auto-rows: 1fr;
+  grid-auto-columns: 1fr;  
+}
+
+.grid-container > div {
+  text-align: left;
+  padding: 0px;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(255, 255, 255);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /*grid-template-rows: repeat(16, 1fr);
+  grid-template-columns: repeat(5, 1fr);*/
+}
+
+.userContainer > .usernameGrid{
+  grid-area: usernameGrid;
+  font-size: 40px;
+  text-align: center;
+}

@@ -1,0 +1,35 @@
+html
+	head
+		script
+			include ./PageJavascript.js
+		script(src = "https://unpkg.com/axios/dist/axios.min.js")
+		script(src = 'https://code.jquery.com/jquery-3.4.1.min.js')
+		style 
+			include ./style.css
+		title Optimized Route Finder
+body
+	include ../partials/header
+
+	div(class = "logo")
+		a(class = "logo") Optimized Route Finder
+		
+	div
+		h1 Product Information
+		label(for="allProducts" class = "radioLabel" id = "allProductsLabel") All Products
+		input(type="radio" id="allProducts" name="searchType" value="allProducts" checked)
+		label(for="inStock" class = "radioLabel" id = "inStockLabel") In Stock
+		input(type="radio" id="inStock" name="searchType" value="inStock")
+		p= motto
+		br
+		h1 Basic Search
+		br
+		| Enter Any Product Name:
+		ul
+		input(type = "text" id="productName")
+		button(type = "button" class = "button" id = "search" onclick=`findByProductName();`) Search Products
+		br
+		button(type = "button" class = "button" id = "orders" onclick=`viewOrders();`) View Orders
+			
+			
+	include ../partials/footer
+
