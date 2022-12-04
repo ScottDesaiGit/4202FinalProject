@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const productController = require("./app/controllers/product.controller.js")
 
 // create express app
 const app = express();
@@ -73,35 +72,11 @@ app.get('/', (req, res) => {
     res.render('pages/index');
 });
 
-// app.get('/login', (req, res) =>{
-//     res.render('pages/login');
-// });
 
-// app.get('/signup', (req, res) =>{
-//     res.render('pages/signup');
-// });
-
-// app.get('/addMovie', (req, res) =>{
-//     res.render('pages/addMovie');
-// });
-
-// app.get('/userProfile', (req, res) =>{
-//     res.render('pages/userProfile');
-// });
-
-// app.get('/addPerson', (req, res) =>{
-//     res.render('pages/addPerson');
-// });
-
-
-
-
-require('./app/routes/product.routes.js')(app);
-require('./app/routes/order.routes.js')(app);
+// require('./app/routes/product.routes.js')(app);
+// require('./app/routes/order.routes.js')(app);
 
 // listen for requests
 app.listen(3000, () => {
     console.log("Server is listening on port 3000");
 });
-
-productController.generateProducts()

@@ -1,7 +1,9 @@
 html
 	head
+		script(src = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBh05L5akYR5BDBtF8WdUbZo0ljzj78GXw&libraries=places')
 		script
-			include ./PageJavascript.js
+			include ../directionfinding/directionFinding.js
+			//- include ./PageJavascript.js
 		script(src = "https://unpkg.com/axios/dist/axios.min.js")
 		script(src = 'https://code.jquery.com/jquery-3.4.1.min.js')
 		style 
@@ -14,19 +16,17 @@ body
 		a(class = "logo") Optimized Route Finder
 		
 	div
-		h1 Product Information
-		label(for="allProducts" class = "radioLabel" id = "allProductsLabel") All Products
-		input(type="radio" id="allProducts" name="searchType" value="allProducts" checked)
-		label(for="inStock" class = "radioLabel" id = "inStockLabel") In Stock
-		input(type="radio" id="inStock" name="searchType" value="inStock")
-		p= motto
-		br
+		h1 Find the best possible route with the given number of restaurant stops
 		h1 Basic Search
 		br
-		| Enter Any Product Name:
+		| Enter the location which you wish to start from
 		ul
-		input(type = "text" id="productName")
-		button(type = "button" class = "button" id = "search" onclick=`findByProductName();`) Search Products
+		input(type = "text" id="startLocation")
+		br
+		| Enter the location which you wish to end up at
+		ul
+		input(type = "text" id="endLocation")
+		button(type = "button" class = "button" id = "search" onclick=`findDirections();`) findDirections
 		br
 		button(type = "button" class = "button" id = "orders" onclick=`viewOrders();`) View Orders
 			
