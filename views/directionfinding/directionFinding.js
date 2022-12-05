@@ -1,5 +1,8 @@
 var directionsService = new google.maps.DirectionsService();
 
+let directionsDisplay = new google.maps.DirectionsRenderer();
+
+
 
 async function findDirections(){
 	// Using Latitude and longitude
@@ -18,13 +21,24 @@ async function findDirections(){
 	travelMap = document.getElementById('travelMap')
 	travelMap.style.height = '750px';
     travelMap.style.width = '1500px';
-	map = new google.maps.Map(document.getElementById('travelMap'), {
-		center: {lat: -33.8666, lng: 151.1958},
-		zoom: 15
-	  });
+	// let map = new google.maps.Map(document.getElementById('travelMap'), {
+	// 	center: {lat: -33.8666, lng: 151.1958},
+	// 	zoom: 15
+	//   });
 
 	directionsService.route(request, function(response, status) {
 		if (status == google.maps.DirectionsStatus.OK) {
+
+			//This code creates a map and then sets the directions on the map equal to whatever we find with the directions service
+			let mapOptions = {
+				zoom: 7,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			}
+			let map = new google.maps.Map(document.getElementById('travelMap'), mapOptions)
+			directionsDisplay.setMap(map)
+			directionsDisplay.setDirections(response)
+
+			//Creating the intiial variables
 			var route = response.routes[0];
 			var leg = response.routes[0].legs[0];
 			var leg2 = response.routes[0].legs[1];
@@ -68,8 +82,20 @@ async function findDirections(){
 			console.log(endLongitude)
 
 			let myLatLng = new google.maps.LatLng(0, 0)
+			
 			console.log(myLatLng)
+			// const flightPath = new google.maps.Polyline({
+			// 	path: polyline,
+			// 	geodesic: true,
+			// 	strokeColor: "#FF0000",
+			// 	strokeOpacity: 1.0,
+			// 	strokeWeight: 2,
+			//   });
 
+			// console.log(flightPath)
+			
+			//   flightPath.setMap(map);
+			// polyline.setMap(map)
 
 			//Here what we need to do is create a new google maps latlng bounds:
 			//https://googlemaps.github.io/v3-utility-library/classes/_googlemaps_jest_mocks.latlngbounds.html
