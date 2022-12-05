@@ -4,6 +4,7 @@ html
 		script
 			include ../directionfinding/directionFinding.js
 			include ../placeFinding/placeFinding.js
+			include ../placeFinding/placeSearchTesting.js
 			//- include ./PageJavascript.js
 		script(src = "https://unpkg.com/axios/dist/axios.min.js")
 		script(src = 'https://code.jquery.com/jquery-3.4.1.min.js')
@@ -30,7 +31,7 @@ body
 		input(type = "text" id="endLocation")
 		button(type = "button" class = "button" id = "search" onclick=`findDirections();`) find Directions
 		br
-		button(type = "button" class = "button" id = "orders" onclick=`viewOrders();`) View Orders
+		button(type = "button" class = "button" id = "orders" onclick=`findPlaces();`) View Orders
 		br
 		button(type = "button" class = "button" id = "place" onclick=`findPlaceByID();`) find place
 			

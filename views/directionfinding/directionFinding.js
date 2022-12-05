@@ -3,7 +3,6 @@ var directionsService = new google.maps.DirectionsService();
 let directionsDisplay = new google.maps.DirectionsRenderer();
 
 
-
 function findDirections(){
 	// Using Latitude and longitude
 	var request = {
@@ -28,13 +27,15 @@ function findDirections(){
 
 	directionsService.route(request, function(response, status) {
 		if (status == google.maps.DirectionsStatus.OK) {
-
+			bounds = new google.maps.LatLngBounds();
 			//This code creates a map and then sets the directions on the map equal to whatever we find with the directions service
 			let mapOptions = {
 				zoom: 7,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			}
-			let map = new google.maps.Map(document.getElementById('travelMap'), mapOptions)
+			map = new google.maps.Map(document.getElementById('travelMap'), mapOptions)
+
+
 			directionsDisplay.setMap(map)
 			directionsDisplay.setDirections(response)
 
@@ -63,9 +64,10 @@ function findDirections(){
 			console.log(endLatitude)
 			console.log(endLongitude)
 
-			let myLatLng = new google.maps.LatLng(0, 0)
 			
+			let myLatLng = new google.maps.LatLng(0, 0)
 			console.log(myLatLng)
+			findPlaces({lat: startLatitude, lng: startLongitude})
 			// const flightPath = new google.maps.Polyline({
 			// 	path: polyline,
 			// 	geodesic: true,
@@ -85,11 +87,55 @@ function findDirections(){
 			//using a google maps latlng literal
 			//https://developers.google.com/maps/documentation/javascript/examples/map-latlng-literal
 
-
+			
 			// console.log(polyline); // Polyline data
 		}
 	});
 }
+
+function findPlaces(position){
+	let sw = new google.maps.LatLng(40, -76)
+	let ne = new google.maps.LatLng(45, -74)
+	let latLngBounds = new google.maps.LatLngBounds(sw, ne)
+	let request = {
+		// location: position,
+		bounds: latLngBounds,
+		// rankBy: google.maps.places.RankBy.DISTANCE,
+		keyword: 'sushi'
+	  };
+	service = new google.maps.places.PlacesService(map);
+	service.nearbySearch(request, nearbyCallback);
+}
+// Handle the results (up to 20) of the Nearby Search
+function nearbyCallback(results, status) {
+	if (status == google.maps.places.PlacesServiceStatus.OK) {
+		console.log("HI!!!")
+		console.log(results)
+	  createMarkers(results);
+	}
+	console.log("HI!!!!")
+	console.log(status)
+  }
+
+//   /* TODO: Step 3C, Generate markers for search results */
+//   // Set markers at the location of each place result
+  function createMarkers(places) {
+	places.forEach(place => {
+	  let marker = new google.maps.Marker({
+		position: place.geometry.location,
+		map: map,
+		title: place.name
+	  });
+
+	  /* TODO: Step 4B: Add click listeners to the markers */
+
+	  // Adjust the map bounds to include the location of this marker
+	  bounds.extend(place.geometry.location);
+	});
+	/* Once all the markers have been placed, adjust the bounds of the map to
+	 * show all the markers within the visible area. */
+	map.fitBounds(bounds);
+  }
 
 function getIDofRestaurantInRadius(latitude, longitude){
 	
