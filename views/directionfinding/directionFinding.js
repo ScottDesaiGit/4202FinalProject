@@ -4,7 +4,7 @@ let directionsDisplay = new google.maps.DirectionsRenderer();
 
 
 
-async function findDirections(){
+function findDirections(){
 	// Using Latitude and longitude
 	var request = {
 		// origin: new google.maps.LatLng(start_lat, start_lon),
@@ -46,8 +46,6 @@ async function findDirections(){
 			var distance = route.legs[0].distance.value;
 			var duration = route.legs[0].duration.value;
 
-			let latLngArr = []
-
 			// console.log(route); // Complete route
 			// console.log(distance); // Only distance 
 			// console.log(duration); // Only duration
@@ -55,22 +53,6 @@ async function findDirections(){
 			// console.log(leg.start_location.lat())
 			console.log(leg)
 			console.log(leg2)
-			let firstSteps = leg.steps
-			let nextSteps = leg2.steps
-
-			//Get the latitude and longitude cooridnates for all of the steps within the leg
-			for(let i = 0; i < firstSteps.length; i++){
-				console.log(firstSteps[i])
-				console.log(firstSteps[i])
-				let startLat = firstSteps[i].start_location.lat()
-				let endLat = firstSteps[i].end_location.lat()
-				let startLng = firstSteps[i].start_location.lng()
-				let endLng = firstSteps[i].end_location.lng()
-				latLngArr.push({startLat: startLat, endLat: endLat, startLng: startLng, endLng: endLng})
-			}
-
-			console.log(latLngArr)
-			
 			let startLatitude = leg.start_location.lat()
 			let startLongitude = leg.start_location.lng()
 
@@ -109,23 +91,24 @@ async function findDirections(){
 	});
 }
 
-// async function getIDofRestaurantInRadius(latitude, longitude){
-
-// 	//instead of the radius, we could use rankby=distance
-// 	var config = {
-// 	  method: 'get',
-// 	  url: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + location['lat'] + '%2C' + location['lng'] + '&radius=10000&type=restaurant&key=' + apiKey,
-// 	  headers: { }
-// 	};
+function getIDofRestaurantInRadius(latitude, longitude){
 	
-// 	axios(config)
-// 	.then(function (response) {
-// 	  let restaurants = response.data.results;
-// 	  for (let i = 0; i < restaurants.length; i++){
-// 		console.log(restaurants[i].name + ', ' + String(restaurants[i].rating));
-// 	  }
-// 	})
-// 	.catch(function (error) {
-// 	  console.log(error);
-// 	});
-// }
+
+	//instead of the radius, we could use rankby=distance
+	var config = {
+	  method: 'get',
+	  url: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + location['lat'] + '%2C' + location['lng'] + '&radius=10000&type=restaurant&key=' + apiKey,
+	  headers: { }
+	};
+	
+	axios(config)
+	.then(function (response) {
+	  let restaurants = response.data.results;
+	  for (let i = 0; i < restaurants.length; i++){
+		console.log(restaurants[i].name + ', ' + String(restaurants[i].rating));
+	  }
+	})
+	.catch(function (error) {
+	  console.log(error);
+	});
+}
