@@ -2,7 +2,8 @@ html
 	head
 		script(src = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBh05L5akYR5BDBtF8WdUbZo0ljzj78GXw&libraries=places')
 		script
-			include ../directionfinding/directionFinding.js
+			include ../directionFinding/findRoute.js
+			//- include ../directionFinding/directionFinding.js
 			include ../placeFinding/placeFinding.js
 			include ../placeFinding/placeSearchTesting.js
 			//- include ./PageJavascript.js
@@ -19,21 +20,23 @@ body
 		
 	div(id = "travelMap")
 	div
-		h1 Find the best possible route with the given number of restaurant stops
-		h1 Basic Search
-		br
 		| Enter the location which you wish to start from
 		ul
-		input(type = "text" id="startLocation")
+		input(type = "text" id="startLocation" value="51 Shaughnessy Crescent") 
 		br
 		| Enter the location which you wish to end up at
 		ul
-		input(type = "text" id="endLocation")
-		button(type = "button" class = "button" id = "search" onclick=`findDirections();`) find Directions
+		input(type = "text" id="endLocation" value="13th Street. 47 W 13th St, New York, NY") 
 		br
-		button(type = "button" class = "button" id = "orders" onclick=`findPlaces();`) View Orders
+		| Enter any restaurants or keywords you wish to search for
+		ul
+		input(type = "text" id ="restaurantType")
 		br
-		button(type = "button" class = "button" id = "place" onclick=`findPlaceByID();`) find place
+		| Enter the number of stops you wish to have (max 2)
+		ul
+		input(type = "text" id = "restaurantStops" value="1")
+		button(type = "button" class = "button" id = "search" onclick=`findOptimalRoute();`) find Directions
+
 			
 			
 	include ../partials/footer

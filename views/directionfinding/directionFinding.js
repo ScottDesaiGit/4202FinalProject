@@ -17,9 +17,7 @@ function findDirections(){
 		travelMode: google.maps.TravelMode.DRIVING
 	};
 
-	travelMap = document.getElementById('travelMap')
-	travelMap.style.height = '750px';
-    travelMap.style.width = '1500px';
+
 	// let map = new google.maps.Map(document.getElementById('travelMap'), {
 	// 	center: {lat: -33.8666, lng: 151.1958},
 	// 	zoom: 15
@@ -100,8 +98,9 @@ function findPlaces(position){
 	let request = {
 		// location: position,
 		bounds: latLngBounds,
+		type: 'restaurant',
 		// rankBy: google.maps.places.RankBy.DISTANCE,
-		keyword: 'sushi'
+		keyword: 'Vegan'
 	  };
 	service = new google.maps.places.PlacesService(map);
 	service.nearbySearch(request, nearbyCallback);
