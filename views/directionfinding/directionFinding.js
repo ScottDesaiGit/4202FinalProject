@@ -46,6 +46,7 @@ function findDirections(){
 }
 
 function getIDofRestaurantInRadius(latitude, longitude){
+	
 
 	//instead of the radius, we could use rankby=distance
 	var config = {

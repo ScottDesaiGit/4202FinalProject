@@ -3,6 +3,7 @@ html
 		script(src = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBh05L5akYR5BDBtF8WdUbZo0ljzj78GXw&libraries=places')
 		script
 			include ../directionfinding/directionFinding.js
+			include ../placeFinding/placeFinding.js
 			//- include ./PageJavascript.js
 		script(src = "https://unpkg.com/axios/dist/axios.min.js")
 		script(src = 'https://code.jquery.com/jquery-3.4.1.min.js')
@@ -26,9 +27,11 @@ body
 		| Enter the location which you wish to end up at
 		ul
 		input(type = "text" id="endLocation")
-		button(type = "button" class = "button" id = "search" onclick=`findDirections();`) findDirections
+		button(type = "button" class = "button" id = "search" onclick=`findDirections();`) find Directions
 		br
 		button(type = "button" class = "button" id = "orders" onclick=`viewOrders();`) View Orders
+		br
+		button(type = "button" class = "button" id = "place" onclick=`findPlaceByID();`) find place
 			
 			
 	include ../partials/footer
