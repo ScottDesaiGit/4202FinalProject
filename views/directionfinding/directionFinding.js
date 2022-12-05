@@ -1,7 +1,7 @@
 var directionsService = new google.maps.DirectionsService();
 
 
-function findDirections(){
+async function findDirections(){
 	// Using Latitude and longitude
 	var request = {
 		// origin: new google.maps.LatLng(start_lat, start_lon),
@@ -15,6 +15,14 @@ function findDirections(){
 		travelMode: google.maps.TravelMode.DRIVING
 	};
 
+	travelMap = document.getElementById('travelMap')
+	travelMap.style.height = '750px';
+    travelMap.style.width = '1500px';
+	map = new google.maps.Map(document.getElementById('travelMap'), {
+		center: {lat: -33.8666, lng: 151.1958},
+		zoom: 15
+	  });
+
 	directionsService.route(request, function(response, status) {
 		if (status == google.maps.DirectionsStatus.OK) {
 			var route = response.routes[0];
@@ -24,6 +32,8 @@ function findDirections(){
 			var distance = route.legs[0].distance.value;
 			var duration = route.legs[0].duration.value;
 
+			let latLngArr = []
+
 			// console.log(route); // Complete route
 			// console.log(distance); // Only distance 
 			// console.log(duration); // Only duration
@@ -31,6 +41,22 @@ function findDirections(){
 			// console.log(leg.start_location.lat())
 			console.log(leg)
 			console.log(leg2)
+			let firstSteps = leg.steps
+			let nextSteps = leg2.steps
+
+			//Get the latitude and longitude cooridnates for all of the steps within the leg
+			for(let i = 0; i < firstSteps.length; i++){
+				console.log(firstSteps[i])
+				console.log(firstSteps[i])
+				let startLat = firstSteps[i].start_location.lat()
+				let endLat = firstSteps[i].end_location.lat()
+				let startLng = firstSteps[i].start_location.lng()
+				let endLng = firstSteps[i].end_location.lng()
+				latLngArr.push({startLat: startLat, endLat: endLat, startLng: startLng, endLng: endLng})
+			}
+
+			console.log(latLngArr)
+			
 			let startLatitude = leg.start_location.lat()
 			let startLongitude = leg.start_location.lng()
 
@@ -40,28 +66,40 @@ function findDirections(){
 			console.log(startLongitude)
 			console.log(endLatitude)
 			console.log(endLongitude)
+
+			let myLatLng = new google.maps.LatLng(0, 0)
+			console.log(myLatLng)
+
+
+			//Here what we need to do is create a new google maps latlng bounds:
+			//https://googlemaps.github.io/v3-utility-library/classes/_googlemaps_jest_mocks.latlngbounds.html
+
+			//using a google maps latlng literal
+			//https://developers.google.com/maps/documentation/javascript/examples/map-latlng-literal
+
+
 			// console.log(polyline); // Polyline data
 		}
 	});
 }
 
-function getIDofRestaurantInRadius(latitude, longitude){
+// async function getIDofRestaurantInRadius(latitude, longitude){
 
-	//instead of the radius, we could use rankby=distance
-	var config = {
-	  method: 'get',
-	  url: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + location['lat'] + '%2C' + location['lng'] + '&radius=10000&type=restaurant&key=' + apiKey,
-	  headers: { }
-	};
+// 	//instead of the radius, we could use rankby=distance
+// 	var config = {
+// 	  method: 'get',
+// 	  url: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + location['lat'] + '%2C' + location['lng'] + '&radius=10000&type=restaurant&key=' + apiKey,
+// 	  headers: { }
+// 	};
 	
-	axios(config)
-	.then(function (response) {
-	  let restaurants = response.data.results;
-	  for (let i = 0; i < restaurants.length; i++){
-		console.log(restaurants[i].name + ', ' + String(restaurants[i].rating));
-	  }
-	})
-	.catch(function (error) {
-	  console.log(error);
-	});
-}
+// 	axios(config)
+// 	.then(function (response) {
+// 	  let restaurants = response.data.results;
+// 	  for (let i = 0; i < restaurants.length; i++){
+// 		console.log(restaurants[i].name + ', ' + String(restaurants[i].rating));
+// 	  }
+// 	})
+// 	.catch(function (error) {
+// 	  console.log(error);
+// 	});
+// }
