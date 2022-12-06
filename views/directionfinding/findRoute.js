@@ -65,7 +65,6 @@ function sleep(milliseconds) {
 }
 
 function findPlaces(stepArr){
-	// console.log(stepArr.length)
 	if(stepArr.length == 0){
 		console.log(restaurantsArr)
 		console.log("In the if statement!!")
@@ -130,7 +129,7 @@ function findPlaces(stepArr){
 }
 
 function computeShortestPathSingle(currIndex, startLocation, endLocation){
-	sleep(15)
+	sleep(50)
 	if(currIndex == restaurantsArr.length){
 		returnShortestPath(startLocation, endLocation)
 		return
@@ -151,7 +150,7 @@ function computeShortestPathSingle(currIndex, startLocation, endLocation){
 
 		if (status == google.maps.DirectionsStatus.OK) {
 			// console.log(response)
-			let duration = response.routes[0].legs[0].duration.value +  response.routes[0].legs[1].duration.value
+			let duration = (response.routes[0].legs[0].duration.value +  response.routes[0].legs[1].duration.value)/restaurantsArr[currIndex].rating
 			// console.log(duration)
 			if(duration < bestTravelValue){
 				bestTravelWaypoints.pop()
@@ -172,8 +171,6 @@ function computeShortestPathSingle(currIndex, startLocation, endLocation){
 function returnShortestPath(startLocation, endLocation){
 	sleep(2000)
 	let waypoints = []
-	// console.log(bestTravelWaypoints)
-	// console.log(bestTravelWaypoints.length)
 	for(let i = 0; i < bestTravelWaypoints.length; i++){
 		waypoints.push({location: bestTravelWaypoints[i].vicinity, stopover: true})
 	}
@@ -192,15 +189,14 @@ function returnShortestPath(startLocation, endLocation){
 	
 	directionsService.route(request, function(response, status) {
 		if (status == google.maps.DirectionsStatus.OK) {
+			let p = document.createElement("p")
+			for(let i = 0; i < bestTravelWaypoints.length; i++){
+				p.innerHTML += `<p>Stop ${i + 1}:</p><p>Restaurant Name: ${bestTravelWaypoints[i].name}</p><p>Adress: ${bestTravelWaypoints[i].vicinity}</p>
+				<p>Rating: ${bestTravelWaypoints[i].rating}</p><br><br>`
+			}
+			let resultsDiv = document.getElementById("restaurantLocation")
+			resultsDiv.appendChild(p);
 			directionsDisplay.setDirections(response);
 		};
 	});
-}
-
-class RouteTravelTime{
-	constructor(names){
-		this.names = names
-		this.duration = duration
-		this.addresses = addresses
-	}
 }
