@@ -4,6 +4,7 @@ let directionsDisplay = new google.maps.DirectionsRenderer();
 
 //Creating an array of restaurants
 let restaurantsArr = []
+let splitRestaurantsArr = []
 let bestTravelWaypoints = []
 let bestTravelValue = Infinity
 
@@ -47,8 +48,8 @@ async function findOptimalRoute(){
 			directionsDisplay.setDirections(response)
 
 			//Getting all of the legs within the current map
-			let stepLength = response.routes[0].legs[0].steps.length
-			let steps = response.routes[0].legs[0].steps.slice(Math.floor(stepLength /3), Math.floor(stepLength * 2/3));
+			// let stepLength = response.routes[0].legs[0].steps.length
+			let steps = response.routes[0].legs[0].steps
 			service = new google.maps.places.PlacesService(map);
 			findPlaces(steps)
 		}
@@ -68,12 +69,34 @@ function findPlaces(stepArr){
 	if(stepArr.length == 0){
 		console.log(restaurantsArr)
 		console.log("In the if statement!!")
-		let numRestaurants = document.getElementById("restaurantStops")
+		let numRestaurants = Number(document.getElementById("restaurantStops").value)
 		let startLocation = document.getElementById('startLocation').value
 		let endLocation = document.getElementById('endLocation').value
-		if(Number(numRestaurants) == 2){
-			computeShortestPath([0, 1], startLocation, endLocation)
+		if(numRestaurants >= 2){
+			console.log("We have acheived 2 restaurants")
+			let currRestaurantsArrSplit = []
+			let indexArr = []
+
+			for(let i = 0; i < numRestaurants; i++){
+				indexArr.push(i)
+				currRestaurantsArr = restaurantsArr.slice(0, restaurantsArr.length/numRestaurants)
+				currRestaurantsArrSplit.push(currRestaurantsArr)
+				restaurantsArr = restaurantsArr.slice(restaurantsArr.length/numRestaurants)
+			}
+
+			let constantTenValue = Math.floor(10/numRestaurants)
+			for(let i = 0; i < numRestaurants; i++){
+				if(i == 0){
+					splitRestaurantsArr.push(currRestaurantsArrSplit[i].slice(-constantTenValue));
+				}else if(i == numRestaurants - 1){
+					splitRestaurantsArr.push(currRestaurantsArrSplit[i].slice(0, constantTenValue));
+				}else{
+					splitRestaurantsArr.push(currRestaurantsArrSplit[i].slice(Math.floor(currRestaurantsArrSplit[i].length/2) - constantTenValue, Math.floor(currRestaurantsArrSplit[i].length/2)))
+				}
+			}
+			computeShortestPath(indexArr, startLocation, endLocation, numRestaurants)
 		}else{
+			restaurantsArr = restaurantsArr.slice(Math.floor(restaurantsArr.length/3), Math.floor(restaurantsArr.length * 2/3))
 			computeShortestPathSingle(0, startLocation, endLocation)
 		}
 		return
@@ -128,6 +151,70 @@ function findPlaces(stepArr){
 	})
 }
 
+
+function computeShortestPath(indexArr, startLocation, endLocation, numRestaurants){
+	sleep(50)
+
+	let waypoints = []
+	for(let i = 0; i < indexArr.length; i++){
+		console.log(splitRestaurantsArr)
+		console.log(indexArr)
+		console.log(splitRestaurantsArr[i])
+		console.log(indexArr[i])
+		waypoints.push({location: splitRestaurantsArr[i][indexArr[i]].vicinity, stopover: true})
+	}
+	var request = {
+		origin: startLocation,
+		destination: endLocation,
+		optimizeWaypoints: true,
+		waypoints: waypoints,
+		avoidHighways: false,
+		avoidTolls: false,
+		travelMode: google.maps.TravelMode.DRIVING
+	};
+
+	directionsService.route(request, function(response, status) {
+
+		if (status == google.maps.DirectionsStatus.OK) {
+			// console.log(response)
+			// let duration = (response.routes[0].legs[0].duration.value +  response.routes[0].legs[1].duration.value)/restaurantsArr[indexArr].rating
+			let durationSum = 0
+			let ratingSum = 0
+			for(let i = 0; i < response.routes[0].legs.length; i++){
+				durationSum += response.routes[0].legs[i].duration.value
+			}
+			for(let i = 0; i < indexArr.length; i++){
+				ratingSum += splitRestaurantsArr[i][indexArr[i]].rating
+			}
+			duration = durationSum/ratingSum
+			if(duration < bestTravelValue){
+				bestTravelWaypoints = []
+				console.log(indexArr)
+				console.log(splitRestaurantsArr)
+				for(let i = 0; i < indexArr.length; i++){
+					bestTravelWaypoints.push(splitRestaurantsArr[i][indexArr[i]])
+				}
+				bestTravelValue = duration
+			}
+		}
+		for(let i = 0; i < indexArr.length; i++){
+			if(indexArr[i] < (Math.floor(10/numRestaurants) - 1)){
+				indexArr[i] += 1
+				if(i > 0){
+					for(let j = 0; j < i; j++){
+						indexArr[j] = 0
+					}
+				}
+				computeShortestPath(indexArr, startLocation, endLocation, numRestaurants)
+				return
+			}
+		}
+
+		returnShortestPath(startLocation, endLocation)
+		return
+	});
+}
+
 function computeShortestPathSingle(currIndex, startLocation, endLocation){
 	sleep(50)
 	if(currIndex == restaurantsArr.length){
@@ -149,28 +236,24 @@ function computeShortestPathSingle(currIndex, startLocation, endLocation){
 	directionsService.route(request, function(response, status) {
 
 		if (status == google.maps.DirectionsStatus.OK) {
-			// console.log(response)
 			let duration = (response.routes[0].legs[0].duration.value +  response.routes[0].legs[1].duration.value)/restaurantsArr[currIndex].rating
-			// console.log(duration)
 			if(duration < bestTravelValue){
 				bestTravelWaypoints.pop()
 				bestTravelWaypoints.push(restaurantsArr[currIndex])
 				bestTravelValue = duration
 			}
 			computeShortestPathSingle(currIndex + 1, startLocation, endLocation)
-			// console.log(response)
-			//Initializing the map
 		}else{
 			computeShortestPathSingle(currIndex + 1, startLocation, endLocation)
 		}
-		// console.log(response)
-		// console.log(status)
+
 	});
 }
 
 function returnShortestPath(startLocation, endLocation){
 	sleep(2000)
 	let waypoints = []
+	console.log(bestTravelWaypoints)
 	for(let i = 0; i < bestTravelWaypoints.length; i++){
 		waypoints.push({location: bestTravelWaypoints[i].vicinity, stopover: true})
 	}
