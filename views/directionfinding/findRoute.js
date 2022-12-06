@@ -65,15 +65,15 @@ function sleep(milliseconds) {
 	} while (currentDate - date < milliseconds);
 }
 
+//Function which finds all of the places 
 function findPlaces(stepArr){
 	if(stepArr.length == 0){
-		console.log(restaurantsArr)
-		console.log("In the if statement!!")
 		let numRestaurants = Number(document.getElementById("restaurantStops").value)
 		let startLocation = document.getElementById('startLocation').value
 		let endLocation = document.getElementById('endLocation').value
+
+		//If there are 2 or greater restaurants then compute using n arrays of a size 10/n, where n is the number of restaurants
 		if(numRestaurants >= 2){
-			console.log("We have acheived 2 restaurants")
 			let currRestaurantsArrSplit = []
 			let indexArr = []
 
@@ -151,16 +151,12 @@ function findPlaces(stepArr){
 	})
 }
 
-
+//Compute the shortest path which stops at either 2 or 3 restaurants
 function computeShortestPath(indexArr, startLocation, endLocation, numRestaurants){
 	sleep(50)
 
 	let waypoints = []
 	for(let i = 0; i < indexArr.length; i++){
-		console.log(splitRestaurantsArr)
-		console.log(indexArr)
-		console.log(splitRestaurantsArr[i])
-		console.log(indexArr[i])
 		waypoints.push({location: splitRestaurantsArr[i][indexArr[i]].vicinity, stopover: true})
 	}
 	var request = {
@@ -176,8 +172,6 @@ function computeShortestPath(indexArr, startLocation, endLocation, numRestaurant
 	directionsService.route(request, function(response, status) {
 
 		if (status == google.maps.DirectionsStatus.OK) {
-			// console.log(response)
-			// let duration = (response.routes[0].legs[0].duration.value +  response.routes[0].legs[1].duration.value)/restaurantsArr[indexArr].rating
 			let durationSum = 0
 			let ratingSum = 0
 			for(let i = 0; i < response.routes[0].legs.length; i++){
@@ -189,8 +183,6 @@ function computeShortestPath(indexArr, startLocation, endLocation, numRestaurant
 			duration = durationSum/ratingSum
 			if(duration < bestTravelValue){
 				bestTravelWaypoints = []
-				console.log(indexArr)
-				console.log(splitRestaurantsArr)
 				for(let i = 0; i < indexArr.length; i++){
 					bestTravelWaypoints.push(splitRestaurantsArr[i][indexArr[i]])
 				}
@@ -215,6 +207,7 @@ function computeShortestPath(indexArr, startLocation, endLocation, numRestaurant
 	});
 }
 
+//Compute the shortest path which stops at a single restaurant
 function computeShortestPathSingle(currIndex, startLocation, endLocation){
 	sleep(50)
 	if(currIndex == restaurantsArr.length){
@@ -223,7 +216,6 @@ function computeShortestPathSingle(currIndex, startLocation, endLocation){
 	}
 	let waypoints = [{location: restaurantsArr[currIndex].vicinity, stopover: true}]
 	var request = {
-		// origin: new google.maps.LatLng(start_lat, start_lon),
 		origin: startLocation,
 		destination: endLocation,
 		optimizeWaypoints: true,
@@ -250,16 +242,15 @@ function computeShortestPathSingle(currIndex, startLocation, endLocation){
 	});
 }
 
+//What this function does is that it will return the shortest path with the best travel waypoints which were found
 function returnShortestPath(startLocation, endLocation){
 	sleep(2000)
 	let waypoints = []
-	console.log(bestTravelWaypoints)
 	for(let i = 0; i < bestTravelWaypoints.length; i++){
 		waypoints.push({location: bestTravelWaypoints[i].vicinity, stopover: true})
 	}
 
 	var request = {
-		// origin: new google.maps.LatLng(start_lat, start_lon),
 		origin: startLocation,
 		destination: endLocation,
 		optimizeWaypoints: true,
@@ -270,6 +261,7 @@ function returnShortestPath(startLocation, endLocation){
 	};
 
 	
+	//Route through the best possible path and display it to the end user
 	directionsService.route(request, function(response, status) {
 		if (status == google.maps.DirectionsStatus.OK) {
 			let p = document.createElement("p")
