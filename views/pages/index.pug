@@ -3,10 +3,6 @@ html
 		script(src = 'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBh05L5akYR5BDBtF8WdUbZo0ljzj78GXw&libraries=places')
 		script
 			include ../directionFinding/findRoute.js
-			//- include ../directionFinding/directionFinding.js
-			include ../placeFinding/placeFinding.js
-			include ../placeFinding/placeSearchTesting.js
-			//- include ./PageJavascript.js
 		script(src = "https://unpkg.com/axios/dist/axios.min.js")
 		script(src = 'https://code.jquery.com/jquery-3.4.1.min.js')
 		style 
@@ -21,21 +17,21 @@ body
 	div(id = "travelMap")
 	div(id = "restaurantLocation")
 	div
-		p Enter the location which you wish to start from
+		p Enter the location which you wish to start from (ex. New York)
 		ul
-		input(type = "text" id="startLocation" value="New York") 
+		input(type = "text" id="startLocation") 
 		br
-		p Enter the location which you wish to end up at
+		p Enter the location which you wish to end up at (ex. Las Vegas)
 		ul
-		input(type = "text" id="endLocation" value="Las Vegas") 
+		input(type = "text" id="endLocation") 
 		br
-		p Enter any restaurants or keywords you wish to search for
+		p Enter any restaurants or keywords you wish to search for (ex. Subway)
 		ul
-		input(type = "text" id ="restaurantType" value = "Subway")
+		input(type = "text" id ="restaurantType")
 		br
-		p Enter the number of stops you wish to have (max 3)
+		p Enter the number of stops you wish to have (a number between 1 and 3)
 		ul
-		input(type = "text" id = "restaurantStops" value="1")
+		input(type = "text" id = "restaurantStops")
 		button(type = "button" class = "button" id = "search" onclick=`findOptimalRoute();`) find Directions
 
 			

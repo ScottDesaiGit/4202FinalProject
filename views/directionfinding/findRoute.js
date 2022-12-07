@@ -265,6 +265,12 @@ function returnShortestPath(startLocation, endLocation){
 	directionsService.route(request, function(response, status) {
 		if (status == google.maps.DirectionsStatus.OK) {
 			let p = document.createElement("p")
+			let durationSum = 0
+			for(let i = 0; i < response.routes[0].legs.length; i++){
+				durationSum += response.routes[0].legs[i].duration.value
+			}
+			let durationString = String(durationSum).toHHMMSS()
+			p.innerHTML += `<p>Total Trip Length: ${durationString}</p><br>`
 			for(let i = 0; i < bestTravelWaypoints.length; i++){
 				p.innerHTML += `<p>Stop ${i + 1}:</p><p>Restaurant Name: ${bestTravelWaypoints[i].name}</p><p>Adress: ${bestTravelWaypoints[i].vicinity}</p>
 				<p>Rating: ${bestTravelWaypoints[i].rating}</p><br><br>`
@@ -274,4 +280,17 @@ function returnShortestPath(startLocation, endLocation){
 			directionsDisplay.setDirections(response);
 		};
 	});
+}
+
+String.prototype.toHHMMSS = function () {
+	let dateConstant = 3600
+    var sec_num = parseInt(this, 10); 
+    var hours   = Math.floor(sec_num / dateConstant);
+    var minutes = Math.floor((sec_num - (hours * dateConstant)) / 60);
+    var seconds = sec_num - (hours * dateConstant) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    return hours+' hours '+minutes+' minutes '+seconds + " seconds";
 }
